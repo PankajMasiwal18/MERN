@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React , { useState } from 'react'
 import axios from 'axios';
 
-const SignUp = () => {
+function SignIn() {
 
-    const [signUpData, setSignUpData] = useState({});
+    const [signInData, setSignInData] = useState({});
 
     const handleChange = (key, value) => {
-        setSignUpData((prev) => ({ ...prev, [key]: value }))
+        setSignInData((prev) => ({ ...prev, [key]: value }))
     }
 
-    const handleSubmit = (e) => {
+    const  handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3001/signup', signUpData)
+        const res = await axios.post('http://localhost:3001/signin', signInData);
+        if(res){
+            console.log(res);
+            localStorage.setItem('token',res.data)
+        }
+       
     }
 
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <label for="name">Name</label>
-                <input type="text" name="name" required
-                    onChange={(e) => handleChange("name", e.target.value)}
-                />
                 <label for="email">Email</label>
                 <input type="email" name="email" required
                     onChange={(e) => handleChange("email", e.target.value)}
@@ -31,11 +32,8 @@ const SignUp = () => {
                 />
                 <button type="submit">Submit</button>
             </form>
-
-
-
         </>
     )
 }
 
-export default SignUp;
+export default SignIn
